@@ -21,7 +21,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img 
-              src="/lovable-uploads/a272c7d9-73d2-4116-a6d9-aeb66e2ed0d0.png" 
+              src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
               alt="GPNet Logo" 
               className="h-10 w-auto"
             />
