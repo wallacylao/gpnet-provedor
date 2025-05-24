@@ -36,7 +36,7 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
                 alt="GPNet Logo" 
-                className="h-10 w-auto"
+                className="h-16 w-auto"
               />
             </div>
             <p className="text-gray-300 leading-relaxed">
