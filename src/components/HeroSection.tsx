@@ -36,7 +36,7 @@ const HeroSection = () => {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Conexão estável, suporte local e tecnologia de ponta para você navegar sem limites
+            GPNet - Conexão estável, suporte local e tecnologia de ponta para você navegar sem limites
           </p>
 
           {/* CTA Buttons */}
