@@ -33,12 +33,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-r from-cnet-green to-cnet-blue rounded-lg flex items-center justify-center">
-                <Wifi className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-cnet-green to-cnet-blue bg-clip-text text-transparent">
-                CNet
-              </span>
+              <img 
+                src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
+                alt="GPNet Logo" 
+                className="h-10 w-auto"
+              />
             </div>
             <p className="text-gray-300 leading-relaxed">
               Conectando você ao futuro com internet de alta velocidade, 
@@ -124,7 +123,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-cnet-blue flex-shrink-0" />
                 <div className="text-gray-300">
-                  <p>contato@cnetprovedor.com.br</p>
+                  <p>contato@gpnetprovedor.com.br</p>
                 </div>
               </div>
             </div>
@@ -137,7 +136,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm">
-              © {currentYear} CNet Provedor de Internet. Todos os direitos reservados.
+              © {currentYear} GPNet Provedor de Internet. Todos os direitos reservados.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <span>CNPJ: 12.345.678/0001-90</span>
