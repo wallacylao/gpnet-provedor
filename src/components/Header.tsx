@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 bg-gray-900 backdrop-blur-md border-b border-gray-800 shadow-sm transition-all duration-300 ${scrolled ? 'py-3' : 'py-5'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-gray-900 backdrop-blur-md border-b border-gray-800 shadow-sm transition-all duration-300 ${scrolled ? 'py-2 md:py-3' : 'py-4 md:py-5'}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -40,7 +40,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
               alt="GPNet Logo" 
-              className={`transition-all duration-300 ${scrolled ? 'h-10' : 'h-16'} w-auto`}
+              className={`transition-all duration-300 ${scrolled ? 'h-8 md:h-10' : 'h-12 md:h-16'} w-auto`}
             />
           </div>
 
