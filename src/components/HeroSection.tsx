@@ -11,7 +11,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="inicio" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+    <section id="inicio" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-14">
       {/* Background with gradient and pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-cnet-green/10 via-white to-cnet-blue/10">
         {/* Tech pattern overlay */}
