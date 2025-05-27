@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, Wifi, Router } from 'lucide-react';
@@ -6,55 +5,54 @@ import { Check, Star, Wifi, Router } from 'lucide-react';
 const PlansSection = () => {
   const plans = [
     {
-      name: 'Essencial',
-      speed: '200',
-      price: 'R$ 79,90',
+      name: 'Light',
+      speed: '300',
+      price: 'R$ 74,90',
       isPopular: false,
       features: [
-        'Roteador Wi-Fi incluso',
-        '2 pontos cabeados',
+        'Roteador Wi-Fi 5G incluso',
         'Suporte técnico 24h',
-        'Instalação grátis'
+        'Instalação grátis',
+        'Equipamento incluso em comodato'
       ]
     },
     {
-      name: 'Performance',
-      speed: '500',
-      price: 'R$ 119,90',
+      name: 'Plus',
+      speed: '450',
+      price: 'R$ 84,90',
       isPopular: true,
       features: [
-        'Roteador Wi-Fi 6 incluso',
-        '3 pontos cabeados',
-        'Suporte técnico 24h',
+        'Wi-Fi 5G incluso',
+        '2 dispositivos cabeados',
         'Instalação grátis',
-        'Wi-Fi mesh disponível'
+        'Equipamento incluso em comodato',
+        'Suporte técnico 24h'
       ]
     },
     {
       name: 'Ultra',
-      speed: '700',
-      price: 'R$ 159,90',
+      speed: '600',
+      price: 'R$ 99,90',
       isPopular: false,
       features: [
-        'Roteador Wi-Fi 6 Premium',
-        '4 pontos cabeados',
-        'Suporte técnico prioritário',
+        'Wi-Fi 6 incluso',
+        'Roteador Mesh',
+        '3 dispositivos cabeados',
         'Instalação grátis',
-        'Wi-Fi mesh incluso'
+        'Equipamento incluso em comodato'
       ]
     },
     {
-      name: 'Gigabit',
-      speed: '800',
-      price: 'R$ 199,90',
+      name: 'Max',
+      speed: '700',
+      price: 'R$ 119,90',
       isPopular: false,
       features: [
-        'Roteador Wi-Fi 6E incluso',
-        '5 pontos cabeados',
-        'Suporte técnico VIP',
+        'Wi-Fi 6 incluso',
+        '2 Roteadores Mesh',
+        '4 dispositivos cabeados',
         'Instalação grátis',
-        'Wi-Fi mesh premium',
-        'IP fixo incluso'
+        'Equipamento incluso em comodato'
       ]
     }
   ];
@@ -71,7 +69,7 @@ const PlansSection = () => {
             para você
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Planos com velocidade real garantida e sem pegadinhas. Todos incluem Wi-Fi e pontos cabeados.
+            Planos com velocidade real garantida e sem pegadinhas. Todos incluem Wi-Fi e instalação gratuita.
           </p>
         </div>
 
@@ -135,7 +133,7 @@ const PlansSection = () => {
 
         <div className="text-center mt-12">
           <p className="text-gray-600 mb-4">
-            Todos os planos incluem roteador Wi-Fi, pontos cabeados e instalação gratuita
+            Todos os planos incluem Wi-Fi, instalação gratuita e equipamento em comodato
           </p>
           <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
             <div className="flex items-center">
