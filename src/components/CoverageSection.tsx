@@ -4,13 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const CoverageSection = () => {
   const mainCities = [
-    'Centro', 'Jardim América', 'Vila Nova', 'Parque Industrial',
-    'Bela Vista', 'Jardim Europa', 'Residencial Lago Azul'
+    'Centro', 'Cohab II', 'Boa Vizinhança', 'Distrito Industrial',
+    'Santo Antonio', 'Pedrinhas', 'Betania'
   ];
 
   const expandingAreas = [
-    'Distrito Industrial', 'Vila São João', 'Jardim Primavera',
-    'Condomínio Portal', 'Loteamento Vista Verde'
+    'Alto do Cristo', 'Parque Silvana', 'Campo dos Velhos',
+    'Condomínio do Shopping', 'Parque Silvana 2'
   ];
 
   return (
