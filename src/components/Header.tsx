@@ -2,10 +2,13 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Detectar rolagem da página
   useEffect(() => {
@@ -24,11 +27,29 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    // Se não estiver na página inicial, navegar primeiro para home
+    if (location.pathname !== '/') {
+      navigate('/');
+      // Pequeno delay para garantir que a página carregou antes de fazer o scroll
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Se já estiver na home, fazer scroll direto
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
     setIsMenuOpen(false);
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -37,11 +58,13 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img 
-              src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
-              alt="GPNet Logo" 
-              className={`transition-all duration-300 ${scrolled ? 'h-8 md:h-10' : 'h-12 md:h-16'} w-auto`}
-            />
+            <button onClick={handleLogoClick}>
+              <img 
+                src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
+                alt="GPNet Logo" 
+                className={`transition-all duration-300 ${scrolled ? 'h-8 md:h-10' : 'h-12 md:h-16'} w-auto`}
+              />
+            </button>
           </div>
 
           {/* Desktop Navigation */}

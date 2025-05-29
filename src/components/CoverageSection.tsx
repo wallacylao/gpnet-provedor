@@ -102,9 +102,12 @@ const CoverageSection = () => {
               <p className="text-gray-600 mb-4">
                 Entre em contato conosco! Estamos sempre expandindo nossa rede para atender mais clientes.
               </p>
-              <button className="bg-gradient-to-r from-gpnet-green to-gpnet-blue text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-300">
+              <a
+                href="https://gpnetce.com.br/app/inmap-auto-viability?campaignId=3&channelId=13"
+                className="inline-block bg-gradient-to-r from-gpnet-green to-gpnet-blue text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-300"
+              >
                 Consultar Disponibilidade
-              </button>
+              </a>
             </div>
           </div>
         </div>

@@ -1,9 +1,10 @@
 
 import { Wifi, Phone, Mail, MapPin, Instagram, Facebook } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
   const helpLinks = [
     { name: 'Perguntas Frequentes', href: '/faq' },
@@ -23,10 +24,13 @@ const Footer = () => {
   ];
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id.replace('#', ''));
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    navigate('/');
+    setTimeout(() => {
+      const element = document.getElementById(id.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleLinkClick = (link: any) => {
@@ -35,6 +39,11 @@ const Footer = () => {
     } else if (link.href.startsWith('#')) {
       scrollToSection(link.href);
     }
+  };
+
+  const handlePageLinkClick = (href: string) => {
+    navigate(href);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -108,12 +117,12 @@ const Footer = () => {
                       {link.name}
                     </button>
                   ) : (
-                    <Link
-                      to={link.href}
-                      className="text-gray-300 hover:text-gpnet-green transition-colors duration-200"
+                    <button
+                      onClick={() => handlePageLinkClick(link.href)}
+                      className="text-gray-300 hover:text-gpnet-green transition-colors duration-200 text-left"
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   )}
                 </li>
               ))}
@@ -126,12 +135,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {transparencyLinks.map((link, index) => (
                 <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="text-gray-300 hover:text-gpnet-green transition-colors duration-200"
+                  <button
+                    onClick={() => handlePageLinkClick(link.href)}
+                    className="text-gray-300 hover:text-gpnet-green transition-colors duration-200 text-left"
                   >
                     {link.name}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
