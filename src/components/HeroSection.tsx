@@ -63,7 +63,7 @@ const HeroSection = () => {
                 <Zap className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Velocidade Máxima</h3>
-              <p className="text-gray-600 text-center">Até 800 Mbps de velocidade real para sua navegação</p>
+              <p className="text-gray-600 text-center">Até 700 Mbps de velocidade real para sua navegação</p>
             </div>
 
             <div className="flex flex-col items-center p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
