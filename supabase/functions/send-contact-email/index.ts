@@ -61,7 +61,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("📤 Enviando email via Resend...");
 
     const emailResponse = await resend.emails.send({
-      from: "GPNet Contato <onboarding@resend.dev>",
+      from: "GPNet Contato <contato@gpnet.digital>",
       to: ["wallacylao@gmail.com.br"],
       subject: `Nova mensagem de contato - ${name}`,
       html: `
