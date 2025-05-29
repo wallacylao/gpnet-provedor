@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,7 +62,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				cnet: {
+				gpnet: {
 					green: '#A8FF00',
 					blue: '#30D5C8',
 					'green-dark': '#8FE000',

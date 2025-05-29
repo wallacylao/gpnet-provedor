@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -182,7 +183,7 @@ const ContactSection = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Entre em{' '}
-            <span className="bg-gradient-to-r from-cnet-green to-cnet-blue bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-gpnet-green to-gpnet-blue bg-clip-text text-transparent">
               contato
             </span>
           </h2>
@@ -198,7 +199,7 @@ const ContactSection = () => {
             <Card className="border-0 shadow-lg bg-white">
               <CardHeader>
                 <CardTitle className="flex items-center text-2xl">
-                  <MessageSquare className="w-7 h-7 text-cnet-blue mr-3" />
+                  <MessageSquare className="w-7 h-7 text-gpnet-blue mr-3" />
                   Informações de Contato
                 </CardTitle>
               </CardHeader>
@@ -208,7 +209,7 @@ const ContactSection = () => {
                     key={index}
                     className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                   >
-                    <div className="w-12 h-12 bg-gradient-to-r from-cnet-green to-cnet-blue rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-gradient-to-r from-gpnet-green to-gpnet-blue rounded-lg flex items-center justify-center flex-shrink-0">
                       <info.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -340,7 +341,7 @@ const ContactSection = () => {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-cnet-green to-cnet-blue hover:from-cnet-green-dark hover:to-cnet-blue-dark text-white py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:opacity-70"
+                  className="w-full bg-gradient-to-r from-gpnet-green to-gpnet-blue hover:from-gpnet-green-dark hover:to-gpnet-blue-dark text-white py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:opacity-70"
                 >
                   {isLoading ? (
                     <>

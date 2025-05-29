@@ -73,7 +73,7 @@ const Footer = () => {
                 <li key={index}>
                   <button
                     onClick={() => scrollToSection(service.href)}
-                    className="text-gray-300 hover:text-cnet-green transition-colors duration-200 text-left"
+                    className="text-gray-300 hover:text-gpnet-green transition-colors duration-200 text-left"
                   >
                     {service.name}
                   </button>
@@ -90,7 +90,7 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-300 hover:text-cnet-green transition-colors duration-200"
+                    className="text-gray-300 hover:text-gpnet-green transition-colors duration-200"
                   >
                     {link.name}
                   </a>
@@ -104,7 +104,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-6">Contato</h3>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
-                <MapPin className="w-5 h-5 text-cnet-blue mt-0.5 flex-shrink-0" />
+                <MapPin className="w-5 h-5 text-gpnet-blue mt-0.5 flex-shrink-0" />
                 <div className="text-gray-300">
                   <p>Rua 4, 43</p>
                   <p>Cohab II - Sobral, CE</p>
@@ -113,7 +113,7 @@ const Footer = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-cnet-blue flex-shrink-0" />
+                <Phone className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
                 <div className="text-gray-300">
                   <p>(88) 9 9712-9857</p>
                   <p className="text-sm">WhatsApp: (88) 9 9712-9857</p>
@@ -121,7 +121,7 @@ const Footer = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-cnet-blue flex-shrink-0" />
+                <Mail className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
                 <div className="text-gray-300">
                   <p>contato@gpnetce.com.br</p>
                 </div>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
@@ -47,31 +48,31 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <button
               onClick={() => scrollToSection('inicio')}
-              className="text-gray-200 hover:text-cnet-green transition-colors duration-200"
+              className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
             >
               Início
             </button>
             <button
               onClick={() => scrollToSection('planos')}
-              className="text-gray-200 hover:text-cnet-green transition-colors duration-200"
+              className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
             >
               Planos
             </button>
             <button
               onClick={() => scrollToSection('cobertura')}
-              className="text-gray-200 hover:text-cnet-green transition-colors duration-200"
+              className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
             >
               Cobertura
             </button>
             <button
               onClick={() => scrollToSection('sobre')}
-              className="text-gray-200 hover:text-cnet-green transition-colors duration-200"
+              className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
             >
               Sobre
             </button>
             <button
               onClick={() => scrollToSection('contato')}
-              className="text-gray-200 hover:text-cnet-green transition-colors duration-200"
+              className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
             >
               Contato
             </button>
@@ -81,7 +82,7 @@ const Header = () => {
           <div className="hidden md:block">
             <Button
               onClick={() => scrollToSection('planos')}
-              className="bg-gradient-to-r from-cnet-green to-cnet-blue hover:from-cnet-green-dark hover:to-cnet-blue-dark text-white px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-gpnet-green to-gpnet-blue hover:from-gpnet-green-dark hover:to-gpnet-blue-dark text-white px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               Assine Agora
             </Button>
@@ -102,37 +103,37 @@ const Header = () => {
             <nav className="flex flex-col space-y-4">
               <button
                 onClick={() => scrollToSection('inicio')}
-                className="text-left text-gray-200 hover:text-cnet-green transition-colors duration-200"
+                className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
               >
                 Início
               </button>
               <button
                 onClick={() => scrollToSection('planos')}
-                className="text-left text-gray-200 hover:text-cnet-green transition-colors duration-200"
+                className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
               >
                 Planos
               </button>
               <button
                 onClick={() => scrollToSection('cobertura')}
-                className="text-left text-gray-200 hover:text-cnet-green transition-colors duration-200"
+                className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
               >
                 Cobertura
               </button>
               <button
                 onClick={() => scrollToSection('sobre')}
-                className="text-left text-gray-200 hover:text-cnet-green transition-colors duration-200"
+                className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
               >
                 Sobre
               </button>
               <button
                 onClick={() => scrollToSection('contato')}
-                className="text-left text-gray-200 hover:text-cnet-green transition-colors duration-200"
+                className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
               >
                 Contato
               </button>
               <Button
                 onClick={() => scrollToSection('planos')}
-                className="bg-gradient-to-r from-cnet-green to-cnet-blue text-white px-6 py-2 rounded-lg shadow-lg w-full"
+                className="bg-gradient-to-r from-gpnet-green to-gpnet-blue text-white px-6 py-2 rounded-lg shadow-lg w-full"
               >
                 Assine Agora
               </Button>
