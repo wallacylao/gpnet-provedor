@@ -62,7 +62,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "GPNet Contato <contato@gpnet.digital>",
-      to: ["wallacylao@gmail.com.br"],
+      to: ["wallacylao@gmail.com"],
       subject: `Nova mensagem de contato - ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
