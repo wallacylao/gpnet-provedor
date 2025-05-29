@@ -4,11 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Phone, Mail, MapPin, Clock, Send, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useFormValidation } from '@/hooks/useFormValidation';
+import { supabase } from '@/integrations/supabase/client';
 
 const ContactSection = () => {
   const { toast } = useToast();
+  const { validateForm, sanitizeInput } = useFormValidation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,34 +27,90 @@ const ContactSection = () => {
       ...prev,
       [name]: value
     }));
+
+    // Limpar erro do campo quando o usuário começar a digitar
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.phone || !formData.message) {
+    if (isLoading) return;
+
+    // Sanitizar dados
+    const sanitizedData = {
+      name: sanitizeInput(formData.name),
+      email: sanitizeInput(formData.email),
+      phone: sanitizeInput(formData.phone),
+      message: sanitizeInput(formData.message)
+    };
+
+    // Validar formulário
+    const validation = validateForm(sanitizedData);
+    
+    if (!validation.isValid) {
+      setFieldErrors(validation.errors);
       toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos do formulário.",
+        title: "Erro de validação",
+        description: "Por favor, corrija os campos destacados.",
         variant: "destructive"
       });
       return;
     }
 
-    // Simulate form submission
-    toast({
-      title: "Mensagem enviada!",
-      description: "Entraremos em contato em até 2 horas.",
-    });
+    setFieldErrors({});
+    setIsLoading(true);
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: ''
-    });
+    try {
+      console.log("Enviando formulário de contato...");
+
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: sanitizedData
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      console.log("Email enviado com sucesso:", data);
+
+      toast({
+        title: "Mensagem enviada com sucesso!",
+        description: "Entraremos em contato em até 2 horas. Obrigado!",
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+
+    } catch (error: any) {
+      console.error("Erro ao enviar formulário:", error);
+      
+      let errorMessage = "Erro interno do servidor. Tente novamente.";
+      
+      if (error.message?.includes('fetch')) {
+        errorMessage = "Erro de conexão. Verifique sua internet e tente novamente.";
+      } else if (error.message?.includes('timeout')) {
+        errorMessage = "A solicitação demorou muito para responder. Tente novamente.";
+      }
+
+      toast({
+        title: "Erro ao enviar mensagem",
+        description: errorMessage,
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -128,6 +189,7 @@ const ContactSection = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button
                 className="bg-green-600 hover:bg-green-700 text-white p-6 h-auto rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={isLoading}
               >
                 <Phone className="w-6 h-6 mr-3" />
                 <div className="text-left">
@@ -138,6 +200,7 @@ const ContactSection = () => {
 
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white p-6 h-auto rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={isLoading}
               >
                 <MessageSquare className="w-6 h-6 mr-3" />
                 <div className="text-left">
@@ -169,9 +232,13 @@ const ContactSection = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Seu nome completo"
-                    className="w-full"
+                    className={`w-full ${fieldErrors.name ? 'border-red-500 focus:border-red-500' : ''}`}
+                    disabled={isLoading}
                     required
                   />
+                  {fieldErrors.name && (
+                    <p className="text-red-500 text-sm mt-1">{fieldErrors.name}</p>
+                  )}
                 </div>
 
                 <div>
@@ -185,9 +252,13 @@ const ContactSection = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="seu@email.com"
-                    className="w-full"
+                    className={`w-full ${fieldErrors.email ? 'border-red-500 focus:border-red-500' : ''}`}
+                    disabled={isLoading}
                     required
                   />
+                  {fieldErrors.email && (
+                    <p className="text-red-500 text-sm mt-1">{fieldErrors.email}</p>
+                  )}
                 </div>
 
                 <div>
@@ -201,9 +272,13 @@ const ContactSection = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="(88) 9 9999-9999"
-                    className="w-full"
+                    className={`w-full ${fieldErrors.phone ? 'border-red-500 focus:border-red-500' : ''}`}
+                    disabled={isLoading}
                     required
                   />
+                  {fieldErrors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{fieldErrors.phone}</p>
+                  )}
                 </div>
 
                 <div>
@@ -217,17 +292,31 @@ const ContactSection = () => {
                     onChange={handleInputChange}
                     placeholder="Conte-nos como podemos ajudar você..."
                     rows={5}
-                    className="w-full"
+                    className={`w-full ${fieldErrors.message ? 'border-red-500 focus:border-red-500' : ''}`}
+                    disabled={isLoading}
                     required
                   />
+                  {fieldErrors.message && (
+                    <p className="text-red-500 text-sm mt-1">{fieldErrors.message}</p>
+                  )}
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-cnet-green to-cnet-blue hover:from-cnet-green-dark hover:to-cnet-blue-dark text-white py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-cnet-green to-cnet-blue hover:from-cnet-green-dark hover:to-cnet-blue-dark text-white py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:opacity-70"
                 >
-                  <Send className="w-5 h-5 mr-2" />
-                  Enviar Mensagem
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Enviar Mensagem
+                    </>
+                  )}
                 </Button>
               </form>
             </CardContent>
