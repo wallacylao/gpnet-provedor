@@ -14,7 +14,7 @@ const Footer = () => {
 
   const transparencyLinks = [
     { name: 'Política de Privacidade', href: '/politica-privacidade' },
-    { name: 'Termos e Contratos', href: '#' }
+    { name: 'Termos e Contratos', href: '/termos-contratos' }
   ];
 
   const services = [

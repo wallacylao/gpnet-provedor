@@ -83,7 +83,7 @@ const Header = () => {
             <Button
               onClick={() => window.open('https://gpnetce.com.br/central_assinante_web/login', '_blank')}
               variant="outline"
-              className="border-gray-600 text-gray-200 hover:bg-gray-800 hover:text-white px-4 py-2 rounded-lg transition-all duration-300"
+              className="border-white text-white bg-transparent hover:bg-white hover:text-gray-900 px-4 py-2 rounded-lg transition-all duration-300"
             >
               Central do Assinante
             </Button>
@@ -141,7 +141,7 @@ const Header = () => {
               <Button
                 onClick={() => window.open('https://gpnetce.com.br/central_assinante_web/login', '_blank')}
                 variant="outline"
-                className="border-gray-600 text-gray-200 hover:bg-gray-800 hover:text-white w-full"
+                className="border-white text-white bg-transparent hover:bg-white hover:text-gray-900 w-full"
               >
                 Central do Assinante
               </Button>
