@@ -56,20 +56,20 @@ const ContactSection = () => {
     {
       icon: Phone,
       title: 'Telefone',
-      details: '(11) 3333-4444',
-      subtitle: 'WhatsApp: (11) 9 9999-8888'
+      details: '(88) 9 9712-9857',
+      subtitle: 'WhatsApp: (88) 9 9712-9857'
     },
     {
       icon: Mail,
       title: 'E-mail',
-      details: 'contato@cnetprovedor.com.br',
-      subtitle: 'suporte@cnetprovedor.com.br'
+      details: 'contato@gpnetce.com.br',
+      subtitle: 'suporte@gpnetce.com.br'
     },
     {
       icon: MapPin,
       title: 'Endereço',
-      details: 'Rua das Conexões, 123',
-      subtitle: 'Centro - São Paulo, SP'
+      details: 'Rua 4, 43',
+      subtitle: 'Cohab II - Sobral, CE'
     },
     {
       icon: Clock,
@@ -132,7 +132,7 @@ const ContactSection = () => {
                 <Phone className="w-6 h-6 mr-3" />
                 <div className="text-left">
                   <div className="font-semibold">Ligue Agora</div>
-                  <div className="text-sm opacity-90">(11) 3333-4444</div>
+                  <div className="text-sm opacity-90">(88) 9 9712-9857</div>
                 </div>
               </Button>
 
@@ -200,7 +200,7 @@ const ContactSection = () => {
                     type="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="(11) 9 9999-9999"
+                    placeholder="(88) 9 9999-9999"
                     className="w-full"
                     required
                   />
