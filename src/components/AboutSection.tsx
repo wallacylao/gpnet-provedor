@@ -22,8 +22,8 @@ const AboutSection = () => {
   ];
 
   const stats = [
-    { number: '10+', label: 'Anos de experiência' },
-    { number: '5000+', label: 'Clientes atendidos' },
+    { number: '14+', label: 'Anos de experiência' },
+    { number: '1000+', label: 'Clientes atendidos' },
     { number: '99.9%', label: 'Uptime garantido' },
     { number: '24/7', label: 'Suporte técnico' }
   ];
