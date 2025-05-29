@@ -17,15 +17,48 @@ interface ContactEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("🚀 Edge Function iniciada");
+  console.log("Método da requisição:", req.method);
+  console.log("Headers da requisição:", Object.fromEntries(req.headers.entries()));
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log("✅ Retornando resposta CORS para OPTIONS");
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { name, email, phone, message }: ContactEmailRequest = await req.json();
+    console.log("📥 Lendo body da requisição...");
+    const requestBody = await req.text();
+    console.log("Body bruto recebido:", requestBody);
 
-    console.log("Enviando email de contato:", { name, email, phone });
+    let parsedData: ContactEmailRequest;
+    try {
+      parsedData = JSON.parse(requestBody);
+      console.log("✅ JSON parseado com sucesso:", parsedData);
+    } catch (parseError) {
+      console.error("❌ Erro ao fazer parse do JSON:", parseError);
+      throw new Error("JSON inválido recebido");
+    }
+
+    const { name, email, phone, message } = parsedData;
+
+    console.log("📧 Dados extraídos para envio:");
+    console.log("Nome:", name);
+    console.log("Email:", email);
+    console.log("Telefone:", phone);
+    console.log("Mensagem:", message?.substring(0, 50) + "...");
+
+    // Verificar se a chave da API do Resend está configurada
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    console.log("🔑 RESEND_API_KEY configurada:", resendApiKey ? "SIM" : "NÃO");
+    console.log("🔑 Primeiros caracteres da chave:", resendApiKey?.substring(0, 10) + "...");
+
+    if (!resendApiKey) {
+      throw new Error("RESEND_API_KEY não configurada");
+    }
+
+    console.log("📤 Enviando email via Resend...");
 
     const emailResponse = await resend.emails.send({
       from: "GPNet Contato <onboarding@resend.dev>",
@@ -75,11 +108,21 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Email enviado com sucesso:", emailResponse);
+    console.log("✅ Resposta do Resend:");
+    console.log("ID do email:", emailResponse.data?.id);
+    console.log("Objeto completo:", JSON.stringify(emailResponse, null, 2));
+
+    if (emailResponse.error) {
+      console.error("❌ Erro retornado pelo Resend:", emailResponse.error);
+      throw new Error(`Erro do Resend: ${JSON.stringify(emailResponse.error)}`);
+    }
+
+    console.log("🎉 Email enviado com sucesso!");
 
     return new Response(JSON.stringify({ 
       success: true, 
-      message: "Email enviado com sucesso!" 
+      message: "Email enviado com sucesso!",
+      emailId: emailResponse.data?.id 
     }), {
       status: 200,
       headers: {
@@ -88,11 +131,17 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("Erro ao enviar email:", error);
+    console.error("💥 ERRO NA EDGE FUNCTION:");
+    console.error("Tipo:", typeof error);
+    console.error("Message:", error.message);
+    console.error("Stack:", error.stack);
+    console.error("Objeto completo:", JSON.stringify(error, null, 2));
+    
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: "Erro interno do servidor. Tente novamente." 
+        error: error.message || "Erro interno do servidor. Tente novamente.",
+        details: error.stack
       }),
       {
         status: 500,

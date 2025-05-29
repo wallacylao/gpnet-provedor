@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,7 +39,16 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (isLoading) return;
+    console.log("=== INÍCIO DO PROCESSO DE ENVIO ===");
+    console.log("Estado isLoading:", isLoading);
+    
+    if (isLoading) {
+      console.log("❌ Formulário já está sendo processado, interrompendo");
+      return;
+    }
+
+    console.log("✅ Iniciando processo de envio...");
+    console.log("Dados do formulário original:", formData);
 
     // Sanitizar dados
     const sanitizedData = {
@@ -50,10 +58,15 @@ const ContactSection = () => {
       message: sanitizeInput(formData.message)
     };
 
+    console.log("Dados sanitizados:", sanitizedData);
+
     // Validar formulário
+    console.log("🔍 Iniciando validação...");
     const validation = validateForm(sanitizedData);
+    console.log("Resultado da validação:", validation);
     
     if (!validation.isValid) {
+      console.log("❌ Validação falhou, erros:", validation.errors);
       setFieldErrors(validation.errors);
       toast({
         title: "Erro de validação",
@@ -63,21 +76,30 @@ const ContactSection = () => {
       return;
     }
 
+    console.log("✅ Validação passou, definindo estado de loading");
     setFieldErrors({});
     setIsLoading(true);
 
     try {
-      console.log("Enviando formulário de contato...");
+      console.log("📤 Preparando para enviar para Edge Function...");
+      console.log("URL do Supabase:", import.meta.env.VITE_SUPABASE_URL);
+      console.log("Dados que serão enviados:", sanitizedData);
 
+      console.log("🚀 Chamando supabase.functions.invoke...");
       const { data, error } = await supabase.functions.invoke('send-contact-email', {
         body: sanitizedData
       });
 
+      console.log("📥 Resposta da Edge Function:");
+      console.log("Data:", data);
+      console.log("Error:", error);
+
       if (error) {
+        console.error("❌ Erro retornado pela Edge Function:", error);
         throw error;
       }
 
-      console.log("Email enviado com sucesso:", data);
+      console.log("✅ Email enviado com sucesso!");
 
       toast({
         title: "Mensagem enviada com sucesso!",
@@ -85,6 +107,7 @@ const ContactSection = () => {
       });
 
       // Reset form
+      console.log("🔄 Resetando formulário...");
       setFormData({
         name: '',
         email: '',
@@ -93,15 +116,26 @@ const ContactSection = () => {
       });
 
     } catch (error: any) {
-      console.error("Erro ao enviar formulário:", error);
+      console.error("💥 ERRO CAPTURADO:", error);
+      console.error("Tipo do erro:", typeof error);
+      console.error("Propriedades do erro:", Object.keys(error));
+      console.error("Message:", error.message);
+      console.error("Stack:", error.stack);
       
       let errorMessage = "Erro interno do servidor. Tente novamente.";
       
       if (error.message?.includes('fetch')) {
         errorMessage = "Erro de conexão. Verifique sua internet e tente novamente.";
+        console.log("🌐 Erro identificado como problema de rede");
       } else if (error.message?.includes('timeout')) {
         errorMessage = "A solicitação demorou muito para responder. Tente novamente.";
+        console.log("⏰ Erro identificado como timeout");
+      } else if (error.message?.includes('FunctionsError')) {
+        errorMessage = "Erro na função do servidor. Verifique os logs.";
+        console.log("🔧 Erro identificado como FunctionsError");
       }
+
+      console.log("📢 Exibindo toast de erro:", errorMessage);
 
       toast({
         title: "Erro ao enviar mensagem",
@@ -109,7 +143,9 @@ const ContactSection = () => {
         variant: "destructive"
       });
     } finally {
+      console.log("🏁 Finalizando processo, setando isLoading=false");
       setIsLoading(false);
+      console.log("=== FIM DO PROCESSO DE ENVIO ===");
     }
   };
 
