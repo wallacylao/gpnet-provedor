@@ -123,7 +123,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-cnet-blue flex-shrink-0" />
                 <div className="text-gray-300">
-                  <p>contato@gpnetprovedor.com.br</p>
+                  <p>contato@gpnetce.com.br</p>
                 </div>
               </div>
             </div>
@@ -139,7 +139,7 @@ const Footer = () => {
               © {currentYear} GPNet Provedor de Internet. Todos os direitos reservados.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
-              <span>CNPJ: 12.345.678/0001-90</span>
+              <span>CNPJ: 19.936.971/0001-76</span>
               <span>•</span>
               <span>Anatel: SCM 123456</span>
             </div>
