@@ -78,8 +78,15 @@ const Header = () => {
             </button>
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-3">
+            <Button
+              onClick={() => window.open('https://gpnetce.com.br/central_assinante_web/login', '_blank')}
+              variant="outline"
+              className="border-gray-600 text-gray-200 hover:bg-gray-800 hover:text-white px-4 py-2 rounded-lg transition-all duration-300"
+            >
+              Central do Assinante
+            </Button>
             <Button
               onClick={() => scrollToSection('planos')}
               className="bg-gradient-to-r from-gpnet-green to-gpnet-blue hover:from-gpnet-green-dark hover:to-gpnet-blue-dark text-white px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -131,6 +138,13 @@ const Header = () => {
               >
                 Contato
               </button>
+              <Button
+                onClick={() => window.open('https://gpnetce.com.br/central_assinante_web/login', '_blank')}
+                variant="outline"
+                className="border-gray-600 text-gray-200 hover:bg-gray-800 hover:text-white w-full"
+              >
+                Central do Assinante
+              </Button>
               <Button
                 onClick={() => scrollToSection('planos')}
                 className="bg-gradient-to-r from-gpnet-green to-gpnet-blue text-white px-6 py-2 rounded-lg shadow-lg w-full"

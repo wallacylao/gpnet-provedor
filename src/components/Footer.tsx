@@ -1,21 +1,25 @@
 
 import { Wifi, Phone, Mail, MapPin, Instagram, Facebook } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = [
-    { name: 'Política de Privacidade', href: '#' },
-    { name: 'Termos de Uso', href: '#' },
-    { name: 'FAQ', href: '#' },
-    { name: 'Portal do Cliente', href: '#' }
+  const helpLinks = [
+    { name: 'Perguntas Frequentes', href: '/faq' },
+    { name: 'Portal do Cliente', href: 'https://gpnetce.com.br/central_assinante_web/login', external: true },
+    { name: 'Suporte Técnico', href: '#contato' },
+    { name: 'Área de Cobertura', href: '#cobertura' }
+  ];
+
+  const transparencyLinks = [
+    { name: 'Política de Privacidade', href: '/politica-privacidade' },
+    { name: 'Termos e Contratos', href: '#' }
   ];
 
   const services = [
     { name: 'Internet Residencial', href: '#planos' },
-    { name: 'Internet Empresarial', href: '#planos' },
-    { name: 'Suporte Técnico', href: '#contato' },
-    { name: 'Área de Cobertura', href: '#cobertura' }
+    { name: 'Internet Empresarial', href: '#planos' }
   ];
 
   const scrollToSection = (id: string) => {
@@ -25,13 +29,21 @@ const Footer = () => {
     }
   };
 
+  const handleLinkClick = (link: any) => {
+    if (link.external) {
+      window.open(link.href, '_blank');
+    } else if (link.href.startsWith('#')) {
+      scrollToSection(link.href);
+    }
+  };
+
   return (
     <footer className="bg-gray-900 text-white">
       {/* Main footer content */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
-          <div className="space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center space-x-2">
               <img 
                 src="/lovable-uploads/6e7cfe2d-d5e9-459f-b8b6-ad69267772b9.png" 
@@ -82,49 +94,75 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* Help Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Links Úteis</h3>
+            <h3 className="text-lg font-semibold mb-6">Ajuda</h3>
             <ul className="space-y-3">
-              {quickLinks.map((link, index) => (
+              {helpLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-gray-300 hover:text-gpnet-green transition-colors duration-200"
-                  >
-                    {link.name}
-                  </a>
+                  {link.external || link.href.startsWith('#') ? (
+                    <button
+                      onClick={() => handleLinkClick(link)}
+                      className="text-gray-300 hover:text-gpnet-green transition-colors duration-200 text-left"
+                    >
+                      {link.name}
+                    </button>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="text-gray-300 hover:text-gpnet-green transition-colors duration-200"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Transparency */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Contato</h3>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <MapPin className="w-5 h-5 text-gpnet-blue mt-0.5 flex-shrink-0" />
-                <div className="text-gray-300">
-                  <p>Rua 4, 43</p>
-                  <p>Cohab II - Sobral, CE</p>
-                  <p>CEP: 62050-700</p>
-                </div>
-              </div>
+            <h3 className="text-lg font-semibold mb-6">Transparência</h3>
+            <ul className="space-y-3">
+              {transparencyLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    to={link.href}
+                    className="text-gray-300 hover:text-gpnet-green transition-colors duration-200"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
-                <div className="text-gray-300">
-                  <p>(88) 9 9712-9857</p>
-                  <p className="text-sm">WhatsApp: (88) 9 9712-9857</p>
-                </div>
+        {/* Contact Info - Moved to bottom */}
+        <div className="mt-12 pt-8 border-t border-gray-800">
+          <h3 className="text-lg font-semibold mb-6">Contato</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex items-start space-x-3">
+              <MapPin className="w-5 h-5 text-gpnet-blue mt-0.5 flex-shrink-0" />
+              <div className="text-gray-300">
+                <p>Rua 4, 43</p>
+                <p>Cohab II - Sobral, CE</p>
+                <p>CEP: 62050-700</p>
               </div>
+            </div>
 
-              <div className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
-                <div className="text-gray-300">
-                  <p>contato@gpnetce.com.br</p>
-                </div>
+            <div className="flex items-center space-x-3">
+              <Phone className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
+              <div className="text-gray-300">
+                <p>(88) 9 9712-9857</p>
+                <p className="text-sm">WhatsApp: (88) 9 9712-9857</p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <Mail className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
+              <div className="text-gray-300">
+                <p>contato@gpnetce.com.br</p>
               </div>
             </div>
           </div>

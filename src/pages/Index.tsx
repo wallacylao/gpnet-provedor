@@ -7,6 +7,8 @@ import AboutSection from '@/components/AboutSection';
 import InstagramSection from '@/components/InstagramSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import CookieBanner from '@/components/CookieBanner';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const Index = () => {
   return (
@@ -21,6 +23,8 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
+      <CookieBanner />
+      <WhatsAppButton />
     </div>
   );
 };
