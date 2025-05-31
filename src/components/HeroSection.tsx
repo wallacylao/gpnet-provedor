@@ -8,7 +8,7 @@ const HeroSection = () => {
   
   const slides = [
     {
-      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04',
+      image: 'https://images.unsplash.com/photo-1639217553674-acefd238f33b',
       alt: 'Sala de estar moderna com sofá e mesa'
     },
     {
