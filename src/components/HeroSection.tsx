@@ -8,15 +8,15 @@ const HeroSection = () => {
   
   const slides = [
     {
-      image: 'https://images.unsplash.com/photo-1639217553674-acefd238f33b',
+      image: 'https://images.unsplash.com/photo-1525829528215-ffae12a76ac8',
       alt: 'Sala de estar moderna com sofá e mesa'
     },
     {
-      image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c',
+      image: 'https://images.unsplash.com/photo-1551434678-e076c223a692',
       alt: 'Pessoas trabalhando com laptops em escritório'
     },
     {
-      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
+      image: 'https://images.unsplash.com/photo-1552581234-26160f608093',
       alt: 'Laptop moderno em mesa de vidro'
     }
   ];
