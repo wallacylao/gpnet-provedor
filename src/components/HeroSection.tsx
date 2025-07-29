@@ -111,7 +111,7 @@ const HeroSection = () => {
           <div className="mt-8 md:mt-16 flex flex-wrap justify-center items-center gap-4 md:gap-8 text-white/80 animate-fade-in delay-[1600ms]">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 md:w-3 md:h-3 bg-gpnet-green rounded-full animate-pulse"></div>
-              <span className="text-xs md:text-sm font-medium">+1.000 clientes conectados</span>
+              <span className="text-xs md:text-sm font-medium">+500 clientes conectados</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 md:w-3 md:h-3 bg-gpnet-blue rounded-full animate-pulse delay-300"></div>
