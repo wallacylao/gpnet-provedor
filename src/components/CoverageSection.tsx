@@ -1,7 +1,6 @@
 
 import { CheckCircle, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import SVGCoverageMap from './SVGCoverageMap';
 
 const CoverageSection = () => {
   const mainCities = [
@@ -29,14 +28,9 @@ const CoverageSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* SVG Coverage Map */}
-          <div className="relative">
-            <SVGCoverageMap />
-          </div>
-
-          {/* Coverage areas */}
-          <div className="space-y-8">
+        <div className="space-y-8">
+          {/* Coverage cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="border-l-4 border-l-gpnet-green">
               <CardHeader>
                 <CardTitle className="flex items-center text-xl">
@@ -80,8 +74,9 @@ const CoverageSection = () => {
                 </p>
               </CardContent>
             </Card>
+          </div>
 
-            <div className="bg-gradient-to-r from-gpnet-green/10 to-gpnet-blue/10 rounded-xl p-6">
+          <div className="bg-gradient-to-r from-gpnet-green/10 to-gpnet-blue/10 rounded-xl p-6">
               <h4 className="font-semibold text-lg mb-2">Não encontrou sua região?</h4>
               <p className="text-gray-600 mb-4">
                 Entre em contato conosco! Estamos sempre expandindo nossa rede para atender mais clientes.
@@ -93,7 +88,6 @@ const CoverageSection = () => {
                 Consultar Disponibilidade
               </a>
             </div>
-          </div>
         </div>
       </div>
     </section>
