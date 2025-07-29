@@ -1,6 +1,7 @@
 
-import { MapPin, CheckCircle, Clock } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import SVGCoverageMap from './SVGCoverageMap';
 
 const CoverageSection = () => {
   const mainCities = [
@@ -29,26 +30,9 @@ const CoverageSection = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Map placeholder */}
+          {/* SVG Coverage Map */}
           <div className="relative">
-            <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 h-96 flex items-center justify-center relative overflow-hidden">
-              {/* Stylized map representation */}
-              <div className="absolute inset-4 border-2 border-dashed border-gray-300 rounded-xl"></div>
-              
-              {/* Coverage points */}
-              <div className="absolute top-8 left-12 w-4 h-4 bg-gpnet-green rounded-full animate-pulse"></div>
-              <div className="absolute top-16 right-16 w-4 h-4 bg-gpnet-green rounded-full animate-pulse delay-300"></div>
-              <div className="absolute bottom-12 left-8 w-4 h-4 bg-gpnet-green rounded-full animate-pulse delay-700"></div>
-              <div className="absolute bottom-8 right-12 w-4 h-4 bg-gpnet-green rounded-full animate-pulse delay-500"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gpnet-blue rounded-full animate-pulse delay-1000"></div>
-
-              {/* Central content */}
-              <div className="text-center z-10">
-                <MapPin className="w-16 h-16 text-gpnet-blue mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-gray-700 mb-2">Mapa de Cobertura</h3>
-                <p className="text-gray-600">Visualização das áreas atendidas</p>
-              </div>
-            </div>
+            <SVGCoverageMap />
           </div>
 
           {/* Coverage areas */}
