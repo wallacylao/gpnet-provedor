@@ -7,7 +7,19 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "X-XSS-Protection": "1; mode=block",
 };
+
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes
+const RATE_LIMIT_MAX_REQUESTS = 3; // 3 requests per window
+
+// Input validation patterns
+const CPF_PATTERN = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+const PHONE_PATTERN = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+const NAME_PATTERN = /^[a-zA-ZÀ-ÿ\s]{2,50}$/;
 
 interface ReferralRequest {
   subscriberName: string;
@@ -15,6 +27,74 @@ interface ReferralRequest {
   subscriberPhone: string;
   nomineeName: string;
   nomineePhone: string;
+  captchaAnswer?: string;
+}
+
+// Rate limiting function
+async function checkRateLimit(supabase: any, ipAddress: string): Promise<boolean> {
+  const now = new Date();
+  const windowStart = new Date(now.getTime() - RATE_LIMIT_WINDOW);
+  
+  // Clean old records
+  await supabase
+    .from("rate_limits")
+    .delete()
+    .lt("window_start", windowStart.toISOString());
+  
+  // Count current requests
+  const { data: existingRequests } = await supabase
+    .from("rate_limits")
+    .select("*")
+    .eq("ip_address", ipAddress)
+    .eq("endpoint", "send-referral-email")
+    .gte("window_start", windowStart.toISOString());
+  
+  if (existingRequests && existingRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return false;
+  }
+  
+  // Record this request
+  await supabase
+    .from("rate_limits")
+    .insert({
+      ip_address: ipAddress,
+      endpoint: "send-referral-email",
+      request_count: 1,
+      window_start: now.toISOString()
+    });
+  
+  return true;
+}
+
+// Input sanitization and validation
+function sanitizeInput(input: string): string {
+  return input.trim().replace(/[<>]/g, "");
+}
+
+function validateReferralData(data: ReferralRequest): { isValid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  
+  if (!data.subscriberName || !NAME_PATTERN.test(data.subscriberName)) {
+    errors.push("Nome do assinante inválido");
+  }
+  
+  if (!data.subscriberCpf || !CPF_PATTERN.test(data.subscriberCpf)) {
+    errors.push("CPF inválido");
+  }
+  
+  if (!data.subscriberPhone || !PHONE_PATTERN.test(data.subscriberPhone)) {
+    errors.push("Telefone do assinante inválido");
+  }
+  
+  if (!data.nomineeName || !NAME_PATTERN.test(data.nomineeName)) {
+    errors.push("Nome do indicado inválido");
+  }
+  
+  if (!data.nomineePhone || !PHONE_PATTERN.test(data.nomineePhone)) {
+    errors.push("Telefone do indicado inválido");
+  }
+  
+  return { isValid: errors.length === 0, errors };
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -22,21 +102,85 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  try {
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-    );
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  );
 
+  try {
+    // Extract IP address
+    const ipAddress = req.headers.get("x-forwarded-for")?.split(",")[0] || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
+
+    // Check rate limit
+    const isAllowed = await checkRateLimit(supabase, ipAddress);
+    if (!isAllowed) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Muitas tentativas. Tente novamente em alguns minutos." 
+        }),
+        {
+          status: 429,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Parse and validate request body
+    let requestData: ReferralRequest;
+    try {
+      requestData = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Dados inválidos" 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Sanitize inputs
     const {
       subscriberName,
       subscriberCpf,
       subscriberPhone,
       nomineeName,
       nomineePhone,
-    }: ReferralRequest = await req.json();
+    } = {
+      subscriberName: sanitizeInput(requestData.subscriberName || ""),
+      subscriberCpf: sanitizeInput(requestData.subscriberCpf || ""),
+      subscriberPhone: sanitizeInput(requestData.subscriberPhone || ""),
+      nomineeName: sanitizeInput(requestData.nomineeName || ""),
+      nomineePhone: sanitizeInput(requestData.nomineePhone || ""),
+    };
 
-    console.log("Processing referral:", { subscriberName, nomineeName });
+    // Validate data
+    const validation = validateReferralData({
+      subscriberName,
+      subscriberCpf,
+      subscriberPhone,
+      nomineeName,
+      nomineePhone,
+    });
+
+    if (!validation.isValid) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Dados inválidos" 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     // Salvar indicação no banco
     const { data: referral, error: dbError } = await supabase
@@ -52,8 +196,17 @@ const handler = async (req: Request): Promise<Response> => {
       .single();
 
     if (dbError) {
-      console.error("Database error:", dbError);
-      throw new Error("Erro ao salvar indicação");
+      console.error("Database error:", dbError.message);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Erro interno. Tente novamente." 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
     // Enviar email de confirmação para o assinante
@@ -93,9 +246,7 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     if (subscriberEmailResponse.error) {
-      console.error("Email error:", subscriberEmailResponse.error);
-    } else {
-      console.log("Email sent successfully:", subscriberEmailResponse);
+      console.error("Email error:", subscriberEmailResponse.error.message);
     }
 
     return new Response(
@@ -110,11 +261,11 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   } catch (error: any) {
-    console.error("Error in send-referral-email function:", error);
+    console.error("Error in send-referral-email function:", error.message);
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message || "Erro interno do servidor" 
+        error: "Erro interno. Tente novamente mais tarde." 
       }),
       {
         status: 500,

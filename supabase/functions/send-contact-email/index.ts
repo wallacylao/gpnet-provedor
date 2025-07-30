@@ -1,5 +1,6 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "npm:resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
@@ -7,58 +8,212 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "X-XSS-Protection": "1; mode=block",
 };
+
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes
+const RATE_LIMIT_MAX_REQUESTS = 3; // 3 requests per window
+
+// Input validation patterns
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_PATTERN = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+const NAME_PATTERN = /^[a-zA-ZÀ-ÿ\s]{2,50}$/;
 
 interface ContactEmailRequest {
   name: string;
   email: string;
   phone: string;
   message: string;
+  captchaAnswer?: string;
+}
+
+// Rate limiting function
+async function checkRateLimit(supabase: any, ipAddress: string): Promise<boolean> {
+  const now = new Date();
+  const windowStart = new Date(now.getTime() - RATE_LIMIT_WINDOW);
+  
+  // Clean old records
+  await supabase
+    .from("rate_limits")
+    .delete()
+    .lt("window_start", windowStart.toISOString());
+  
+  // Count current requests
+  const { data: existingRequests } = await supabase
+    .from("rate_limits")
+    .select("*")
+    .eq("ip_address", ipAddress)
+    .eq("endpoint", "send-contact-email")
+    .gte("window_start", windowStart.toISOString());
+  
+  if (existingRequests && existingRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return false;
+  }
+  
+  // Record this request
+  await supabase
+    .from("rate_limits")
+    .insert({
+      ip_address: ipAddress,
+      endpoint: "send-contact-email",
+      request_count: 1,
+      window_start: now.toISOString()
+    });
+  
+  return true;
+}
+
+// Input sanitization and validation
+function sanitizeInput(input: string): string {
+  return input.trim().replace(/[<>]/g, "");
+}
+
+function validateContactData(data: ContactEmailRequest): { isValid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  
+  if (!data.name || !NAME_PATTERN.test(data.name)) {
+    errors.push("Nome inválido");
+  }
+  
+  if (!data.email || !EMAIL_PATTERN.test(data.email)) {
+    errors.push("Email inválido");
+  }
+  
+  if (!data.phone || !PHONE_PATTERN.test(data.phone)) {
+    errors.push("Telefone inválido");
+  }
+  
+  if (!data.message || data.message.length < 10 || data.message.length > 1000) {
+    errors.push("Mensagem deve ter entre 10 e 1000 caracteres");
+  }
+  
+  return { isValid: errors.length === 0, errors };
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  console.log("🚀 Edge Function iniciada");
-  console.log("Método da requisição:", req.method);
-  console.log("Headers da requisição:", Object.fromEntries(req.headers.entries()));
-
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    console.log("✅ Retornando resposta CORS para OPTIONS");
     return new Response(null, { headers: corsHeaders });
   }
 
-  try {
-    console.log("📥 Lendo body da requisição...");
-    const requestBody = await req.text();
-    console.log("Body bruto recebido:", requestBody);
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  );
 
-    let parsedData: ContactEmailRequest;
-    try {
-      parsedData = JSON.parse(requestBody);
-      console.log("✅ JSON parseado com sucesso:", parsedData);
-    } catch (parseError) {
-      console.error("❌ Erro ao fazer parse do JSON:", parseError);
-      throw new Error("JSON inválido recebido");
+  try {
+    // Extract IP address
+    const ipAddress = req.headers.get("x-forwarded-for")?.split(",")[0] || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
+
+    // Check rate limit
+    const isAllowed = await checkRateLimit(supabase, ipAddress);
+    if (!isAllowed) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Muitas tentativas. Tente novamente em alguns minutos." 
+        }),
+        {
+          status: 429,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
-    const { name, email, phone, message } = parsedData;
+    // Parse and validate request body
+    let requestData: ContactEmailRequest;
+    try {
+      requestData = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Dados inválidos" 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
-    console.log("📧 Dados extraídos para envio:");
-    console.log("Nome:", name);
-    console.log("Email:", email);
-    console.log("Telefone:", phone);
-    console.log("Mensagem:", message?.substring(0, 50) + "...");
+    // Sanitize inputs
+    const {
+      name,
+      email,
+      phone,
+      message,
+    } = {
+      name: sanitizeInput(requestData.name || ""),
+      email: sanitizeInput(requestData.email || ""),
+      phone: sanitizeInput(requestData.phone || ""),
+      message: sanitizeInput(requestData.message || ""),
+    };
+
+    // Validate data
+    const validation = validateContactData({
+      name,
+      email,
+      phone,
+      message,
+    });
+
+    if (!validation.isValid) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Dados inválidos" 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Save contact message to database
+    const { error: dbError } = await supabase
+      .from("contact_messages")
+      .insert({
+        name,
+        email,
+        phone,
+        message,
+      });
+
+    if (dbError) {
+      console.error("Database error:", dbError.message);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Erro interno. Tente novamente." 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     // Verificar se a chave da API do Resend está configurada
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    console.log("🔑 RESEND_API_KEY configurada:", resendApiKey ? "SIM" : "NÃO");
-    console.log("🔑 Primeiros caracteres da chave:", resendApiKey?.substring(0, 10) + "...");
-
     if (!resendApiKey) {
-      throw new Error("RESEND_API_KEY não configurada");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Erro de configuração do servidor" 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
-
-    console.log("📤 Enviando email via Resend...");
 
     const emailResponse = await resend.emails.send({
       from: "GPNet <noreply@gpnetce.com.br>",
@@ -108,16 +263,9 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("✅ Resposta do Resend:");
-    console.log("ID do email:", emailResponse.data?.id);
-    console.log("Objeto completo:", JSON.stringify(emailResponse, null, 2));
-
     if (emailResponse.error) {
-      console.error("❌ Erro retornado pelo Resend:", emailResponse.error);
-      throw new Error(`Erro do Resend: ${JSON.stringify(emailResponse.error)}`);
+      console.error("Email error:", emailResponse.error.message);
     }
-
-    console.log("🎉 Email enviado com sucesso!");
 
     return new Response(JSON.stringify({ 
       success: true, 
@@ -131,17 +279,11 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("💥 ERRO NA EDGE FUNCTION:");
-    console.error("Tipo:", typeof error);
-    console.error("Message:", error.message);
-    console.error("Stack:", error.stack);
-    console.error("Objeto completo:", JSON.stringify(error, null, 2));
-    
+    console.error("Error in send-contact-email function:", error.message);
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message || "Erro interno do servidor. Tente novamente.",
-        details: error.stack
+        error: "Erro interno. Tente novamente mais tarde." 
       }),
       {
         status: 500,
