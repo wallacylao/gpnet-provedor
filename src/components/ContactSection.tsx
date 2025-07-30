@@ -141,7 +141,7 @@ const ContactSection = () => {
     {
       icon: Mail,
       title: 'E-mail',
-      details: 'contato@gpnetce.com.br',
+      details: 'sac@gpnetce.com.br',
       subtitle: 'suporte@gpnetce.com.br'
     },
     {
