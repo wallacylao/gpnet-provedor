@@ -147,35 +147,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Contact Info - Moved to bottom */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <h3 className="text-lg font-semibold mb-6">Contato</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-start space-x-3">
-              <MapPin className="w-5 h-5 text-gpnet-blue mt-0.5 flex-shrink-0" />
-              <div className="text-gray-300">
-                <p>Rua 4, 43</p>
-                <p>Cohab II - Sobral, CE</p>
-                <p>CEP: 62050-700</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Phone className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
-              <div className="text-gray-300">
-                <p>(88) 9 9712-9857</p>
-                <p className="text-sm">WhatsApp: (88) 9 9712-9857</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Mail className="w-5 h-5 text-gpnet-blue flex-shrink-0" />
-              <div className="text-gray-300">
-                <p>contato@gpnetce.com.br</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Bottom footer */}
