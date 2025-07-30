@@ -1,18 +1,33 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap, Shield, Headphones } from 'lucide-react';
 import { useState, useEffect } from 'react';
+
+// Import hero images
+import homeInternetDesktop from '@/assets/hero-home-internet-desktop.webp';
+import homeInternetMobile from '@/assets/hero-home-internet-mobile.webp';
+import familyConnectedDesktop from '@/assets/hero-family-connected-desktop.webp';
+import familyConnectedMobile from '@/assets/hero-family-connected-mobile.webp';
+import networkInfrastructureDesktop from '@/assets/hero-network-infrastructure-desktop.webp';
+import networkInfrastructureMobile from '@/assets/hero-network-infrastructure-mobile.webp';
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = [{
-    image: 'https://images.unsplash.com/photo-1525829528215-ffae12a76ac8',
-    alt: 'Sala de estar moderna com sofá e mesa'
-  }, {
-    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692',
-    alt: 'Pessoas trabalhando com laptops em escritório'
-  }, {
-    image: 'https://images.unsplash.com/photo-1552581234-26160f608093',
-    alt: 'Laptop moderno em mesa de vidro'
-  }];
+  const slides = [
+    {
+      desktopImage: homeInternetDesktop,
+      mobileImage: homeInternetMobile,
+      alt: "Pessoa em casa usando internet ultra-rápida"
+    },
+    {
+      desktopImage: familyConnectedDesktop,
+      mobileImage: familyConnectedMobile,
+      alt: "Família conectada com dispositivos simultâneos"
+    },
+    {
+      desktopImage: networkInfrastructureDesktop,
+      mobileImage: networkInfrastructureMobile,
+      alt: "Infraestrutura de rede futurista"
+    }
+  ];
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % slides.length);
@@ -31,9 +46,18 @@ const HeroSection = () => {
       {/* Slider Background */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
-            <img src={`${slide.image}?auto=format&fit=crop&w=1920&h=1080`} alt={slide.alt} className="w-full h-full object-cover md:object-cover object-center" style={{
-          objectPosition: 'center 30%'
-        }} />
+            <picture>
+              <source 
+                media="(min-width: 768px)" 
+                srcSet={slide.desktopImage} 
+              />
+              <img
+                src={slide.mobileImage}
+                alt={slide.alt}
+                className="w-full h-full object-cover"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            </picture>
             <div className="absolute inset-0 bg-black/50 md:bg-black/40"></div>
           </div>)}
         
