@@ -58,8 +58,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Enviar email de confirmação para o assinante
     const subscriberEmailResponse = await resend.emails.send({
-      from: "GPNet <noreply@gpnet.com.br>",
-      to: ["contato@gpnet.com.br"], // Email da empresa para receber notificações
+      from: "GPNet <noreply@gpnetce.com.br>",
+      to: ["indique@gpnetce.com.br"], // Email da empresa para receber notificações
       subject: "Nova Indicação Recebida - Programa de Indicações GPNet",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
