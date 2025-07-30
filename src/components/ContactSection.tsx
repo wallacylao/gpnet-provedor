@@ -4,14 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Loader2 } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Loader2, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useFormValidation } from '@/hooks/useFormValidation';
+import { usePhoneMask } from '@/hooks/usePhoneMask';
+import { useCaptcha } from '@/hooks/useCaptcha';
 import { supabase } from '@/integrations/supabase/client';
 
 const ContactSection = () => {
   const { toast } = useToast();
   const { validateForm, sanitizeInput } = useFormValidation();
+  const phoneMask = usePhoneMask();
+  const captcha = useCaptcha();
   const [isLoading, setIsLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
@@ -23,10 +27,19 @@ const ContactSection = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    if (name === 'phone') {
+      const maskedValue = phoneMask.handleChange(value);
+      setFormData(prev => ({
+        ...prev,
+        [name]: maskedValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
 
     // Limpar erro do campo quando o usuário começar a digitar
     if (fieldErrors[name]) {
@@ -40,16 +53,18 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log("=== INÍCIO DO PROCESSO DE ENVIO ===");
-    console.log("Estado isLoading:", isLoading);
-    
-    if (isLoading) {
-      console.log("❌ Formulário já está sendo processado, interrompendo");
+    if (isLoading) return;
+
+    // Validar CAPTCHA primeiro
+    if (!captcha.isValid) {
+      setFieldErrors(prev => ({ ...prev, captcha: 'Por favor, resolva a operação matemática corretamente' }));
+      toast({
+        title: "Verificação necessária",
+        description: "Por favor, resolva a operação matemática para continuar.",
+        variant: "destructive",
+      });
       return;
     }
-
-    console.log("✅ Iniciando processo de envio...");
-    console.log("Dados do formulário original:", formData);
 
     // Sanitizar dados
     const sanitizedData = {
@@ -59,15 +74,10 @@ const ContactSection = () => {
       message: sanitizeInput(formData.message)
     };
 
-    console.log("Dados sanitizados:", sanitizedData);
-
     // Validar formulário
-    console.log("🔍 Iniciando validação...");
     const validation = validateForm(sanitizedData);
-    console.log("Resultado da validação:", validation);
     
     if (!validation.isValid) {
-      console.log("❌ Validação falhou, erros:", validation.errors);
       setFieldErrors(validation.errors);
       toast({
         title: "Erro de validação",
@@ -77,30 +87,15 @@ const ContactSection = () => {
       return;
     }
 
-    console.log("✅ Validação passou, definindo estado de loading");
     setFieldErrors({});
     setIsLoading(true);
 
     try {
-      console.log("📤 Preparando para enviar para Edge Function...");
-      console.log("URL do Supabase:", import.meta.env.VITE_SUPABASE_URL);
-      console.log("Dados que serão enviados:", sanitizedData);
-
-      console.log("🚀 Chamando supabase.functions.invoke...");
       const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: sanitizedData
+        body: { ...sanitizedData, captcha: captcha.userAnswer }
       });
 
-      console.log("📥 Resposta da Edge Function:");
-      console.log("Data:", data);
-      console.log("Error:", error);
-
-      if (error) {
-        console.error("❌ Erro retornado pela Edge Function:", error);
-        throw error;
-      }
-
-      console.log("✅ Email enviado com sucesso!");
+      if (error) throw error;
 
       toast({
         title: "Mensagem enviada com sucesso!",
@@ -108,35 +103,23 @@ const ContactSection = () => {
       });
 
       // Reset form
-      console.log("🔄 Resetando formulário...");
       setFormData({
         name: '',
         email: '',
         phone: '',
         message: ''
       });
+      phoneMask.setValue('');
+      captcha.reset();
 
     } catch (error: any) {
-      console.error("💥 ERRO CAPTURADO:", error);
-      console.error("Tipo do erro:", typeof error);
-      console.error("Propriedades do erro:", Object.keys(error));
-      console.error("Message:", error.message);
-      console.error("Stack:", error.stack);
-      
       let errorMessage = "Erro interno do servidor. Tente novamente.";
       
       if (error.message?.includes('fetch')) {
         errorMessage = "Erro de conexão. Verifique sua internet e tente novamente.";
-        console.log("🌐 Erro identificado como problema de rede");
       } else if (error.message?.includes('timeout')) {
         errorMessage = "A solicitação demorou muito para responder. Tente novamente.";
-        console.log("⏰ Erro identificado como timeout");
-      } else if (error.message?.includes('FunctionsError')) {
-        errorMessage = "Erro na função do servidor. Verifique os logs.";
-        console.log("🔧 Erro identificado como FunctionsError");
       }
-
-      console.log("📢 Exibindo toast de erro:", errorMessage);
 
       toast({
         title: "Erro ao enviar mensagem",
@@ -144,9 +127,7 @@ const ContactSection = () => {
         variant: "destructive"
       });
     } finally {
-      console.log("🏁 Finalizando processo, setando isLoading=false");
       setIsLoading(false);
-      console.log("=== FIM DO PROCESSO DE ENVIO ===");
     }
   };
 
@@ -336,13 +317,51 @@ const ContactSection = () => {
                   {fieldErrors.message && (
                     <p className="text-red-500 text-sm mt-1">{fieldErrors.message}</p>
                   )}
-                </div>
+                 </div>
 
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-gpnet-green to-gpnet-blue hover:from-gpnet-green-dark hover:to-gpnet-blue-dark text-white py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:opacity-70"
-                >
+                 {/* CAPTCHA */}
+                 <div className="bg-gray-50 p-4 rounded-lg border">
+                   <label className="block text-sm font-medium text-gray-700 mb-3">
+                     Verificação de Segurança *
+                   </label>
+                   <div className="flex items-center space-x-4">
+                     <div className="flex items-center space-x-2">
+                       <span className="text-lg font-semibold text-gray-800">
+                         {captcha.captcha?.question} =
+                       </span>
+                       <Input
+                         type="number"
+                         value={captcha.userAnswer}
+                         onChange={(e) => captcha.handleAnswerChange(e.target.value)}
+                         placeholder="?"
+                         className={`w-20 text-center ${fieldErrors.captcha ? 'border-red-500' : captcha.isValid ? 'border-green-500' : ''}`}
+                         disabled={isLoading}
+                       />
+                       <Button
+                         type="button"
+                         variant="outline"
+                         size="sm"
+                         onClick={captcha.refreshCaptcha}
+                         disabled={isLoading}
+                         className="p-2"
+                       >
+                         <RefreshCw className="w-4 h-4" />
+                       </Button>
+                     </div>
+                   </div>
+                   {fieldErrors.captcha && (
+                     <p className="text-red-500 text-sm mt-2">{fieldErrors.captcha}</p>
+                   )}
+                   {captcha.isValid && (
+                     <p className="text-green-600 text-sm mt-2">✓ Verificação concluída</p>
+                   )}
+                 </div>
+
+                 <Button
+                   type="submit"
+                   disabled={isLoading || !captcha.isValid}
+                   className="w-full bg-gradient-to-r from-gpnet-green to-gpnet-blue hover:from-gpnet-green-dark hover:to-gpnet-blue-dark text-white py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:opacity-70"
+                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />

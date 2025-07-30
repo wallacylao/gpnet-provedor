@@ -28,7 +28,7 @@ const FAQ = () => {
     },
     {
       question: "Como acessar a Central do Assinante?",
-      answer: "Acesse gpnetce.com.br/central_assinante_web/login com seu CPF e senha. Na central você pode acompanhar seu consumo, emitir 2ª via de boletos e abrir chamados técnicos."
+      answer: "Acesse central.gpnetce.com.br com seu CPF e senha. Na central você pode acompanhar seu consumo, emitir 2ª via de boletos e abrir chamados técnicos."
     },
     {
       question: "O que fazer em caso de problemas técnicos?",

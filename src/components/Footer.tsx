@@ -8,7 +8,7 @@ const Footer = () => {
 
   const helpLinks = [
     { name: 'Perguntas Frequentes', href: '/faq' },
-    { name: 'Portal do Cliente', href: 'https://gpnetce.com.br/central_assinante_web/login', external: true },
+    { name: 'Portal do Cliente', href: 'https://central.gpnetce.com.br', external: true },
     { name: 'Suporte Técnico', href: '#contato' },
     { name: 'Área de Cobertura', href: '#cobertura' }
   ];

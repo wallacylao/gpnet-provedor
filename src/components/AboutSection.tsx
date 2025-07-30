@@ -18,7 +18,7 @@ const AboutSection = () => {
     number: '14+',
     label: 'Anos de experiência'
   }, {
-    number: '1000+',
+    number: '500+',
     label: 'Clientes atendidos'
   }, {
     number: '99.9%',

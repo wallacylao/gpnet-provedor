@@ -1,20 +1,32 @@
 import { useState } from 'react';
-import { ArrowLeft, Users, Gift, CheckCircle, Phone } from 'lucide-react';
+import { ArrowLeft, Users, Gift, CheckCircle, Phone, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useReferralForm } from '@/hooks/useReferralForm';
+import { useCaptcha } from '@/hooks/useCaptcha';
 
 const Referrals = () => {
   const { formData, errors, isSubmitting, handleInputChange, submitForm } = useReferralForm();
+  const captcha = useCaptcha();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [captchaError, setCaptchaError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validar CAPTCHA primeiro
+    if (!captcha.isValid) {
+      setCaptchaError('Por favor, resolva a operação matemática corretamente');
+      return;
+    }
+    
+    setCaptchaError('');
     const success = await submitForm();
     if (success) {
+      captcha.reset();
       setIsSubmitted(true);
     }
   };
@@ -183,7 +195,7 @@ const Referrals = () => {
 
                 {/* Dados do Indicado */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-secondary border-b pb-2">
+                  <h3 className="text-lg font-semibold text-primary border-b pb-2">
                     Dados da Pessoa Indicada
                   </h3>
                   
@@ -215,14 +227,52 @@ const Referrals = () => {
                       <p className="text-sm text-destructive mt-1">{errors.nomineePhone}</p>
                     )}
                   </div>
-                </div>
+                 </div>
 
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
+                 {/* CAPTCHA */}
+                 <div className="bg-gray-50 p-4 rounded-lg border">
+                   <Label className="block text-sm font-medium text-gray-700 mb-3">
+                     Verificação de Segurança *
+                   </Label>
+                   <div className="flex items-center space-x-4">
+                     <div className="flex items-center space-x-2">
+                       <span className="text-lg font-semibold text-gray-800">
+                         {captcha.captcha?.question} =
+                       </span>
+                       <Input
+                         type="number"
+                         value={captcha.userAnswer}
+                         onChange={(e) => captcha.handleAnswerChange(e.target.value)}
+                         placeholder="?"
+                         className={`w-20 text-center ${captchaError ? 'border-destructive' : captcha.isValid ? 'border-green-500' : ''}`}
+                         disabled={isSubmitting}
+                       />
+                       <Button
+                         type="button"
+                         variant="outline"
+                         size="sm"
+                         onClick={captcha.refreshCaptcha}
+                         disabled={isSubmitting}
+                         className="p-2"
+                       >
+                         <RefreshCw className="w-4 h-4" />
+                       </Button>
+                     </div>
+                   </div>
+                   {captchaError && (
+                     <p className="text-destructive text-sm mt-2">{captchaError}</p>
+                   )}
+                   {captcha.isValid && (
+                     <p className="text-green-600 text-sm mt-2">✓ Verificação concluída</p>
+                   )}
+                 </div>
+
+                 <Button 
+                   type="submit" 
+                   size="lg" 
+                   className="w-full"
+                   disabled={isSubmitting || !captcha.isValid}
+                 >
                   {isSubmitting ? 'Enviando...' : 'Enviar Indicação'}
                 </Button>
 

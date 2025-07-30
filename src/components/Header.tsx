@@ -104,7 +104,7 @@ const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-3">
             <Button
-              onClick={() => window.open('https://gpnetce.com.br/central_assinante_web/login', '_blank')}
+              onClick={() => window.open('https://central.gpnetce.com.br', '_blank')}
               variant="outline"
               className="border-white text-white bg-transparent hover:bg-white hover:text-gray-900 px-4 py-2 rounded-lg transition-all duration-300"
             >
@@ -162,7 +162,7 @@ const Header = () => {
                 Contato
               </button>
               <Button
-                onClick={() => window.open('https://gpnetce.com.br/central_assinante_web/login', '_blank')}
+                onClick={() => window.open('https://central.gpnetce.com.br', '_blank')}
                 variant="outline"
                 className="border-white text-white bg-transparent hover:bg-white hover:text-gray-900 w-full"
               >
