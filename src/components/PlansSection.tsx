@@ -4,6 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, Wifi, Router } from 'lucide-react';
 
 const PlansSection = () => {
+  const whatsappNumber = '5588997129857';
+
+  const handleWhatsAppClick = (plan: any) => {
+    const message = `Olá! Vim do site da GPNet e tenho interesse no Plano ${plan.name} (${plan.speed} Mbps por ${plan.price}/mês). Gostaria de mais informações sobre contratação e disponibilidade na minha região.`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   const plans = [
     {
       name: 'Light',
@@ -118,6 +127,7 @@ const PlansSection = () => {
                 </div>
 
                 <Button
+                  onClick={() => handleWhatsAppClick(plan)}
                   className={`w-full mt-6 py-3 rounded-lg transition-all duration-300 ${
                     plan.isPopular
                       ? 'bg-gradient-to-r from-gpnet-green to-gpnet-blue hover:from-gpnet-green-dark hover:to-gpnet-blue-dark text-white shadow-lg'
