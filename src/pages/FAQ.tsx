@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Helmet } from 'react-helmet-async';
 const FAQ = () => {
   const faqs = [{
     question: "Como posso contratar os serviços da GPNet?",
@@ -34,6 +35,25 @@ const FAQ = () => {
     answer: "Sim, você pode fazer upgrade do seu plano a qualquer momento. Para downgrade, há carência de 60 dias após a última alteração."
   }];
   return <div className="min-h-screen">
+      <Helmet>
+        <title>Perguntas Frequentes - GPNet | Dúvidas sobre Internet Fibra Óptica Sobral</title>
+        <meta name="description" content="Tire suas dúvidas sobre os planos de internet fibra óptica da GPNet em Sobral. FAQ completo sobre instalação, suporte técnico, velocidade e muito mais." />
+        <link rel="canonical" href="https://www.gpnetce.com.br/faq" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqs.map(faq => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+              }
+            }))
+          })}
+        </script>
+      </Helmet>
       <Header />
       <main className="pt-40 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">

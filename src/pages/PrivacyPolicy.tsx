@@ -1,10 +1,16 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Helmet } from 'react-helmet-async';
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Política de Privacidade - GPNet | Proteção de Dados LGPD</title>
+        <meta name="description" content="Conheça nossa política de privacidade e como a GPNet protege seus dados pessoais em conformidade com a LGPD. Transparência e segurança em primeiro lugar." />
+        <link rel="canonical" href="https://www.gpnetce.com.br/politica-privacidade" />
+      </Helmet>
       <Header />
       <main className="pt-40 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">

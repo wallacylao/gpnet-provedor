@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, Users, Gift, CheckCircle, Phone, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -64,6 +65,11 @@ const Referrals = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+      <Helmet>
+        <title>Programa de Indicações - GPNet | Ganhe Indicando Internet Sobral</title>
+        <meta name="description" content="Indique amigos e ganhe desconto na sua mensalidade! Programa de indicações GPNet - mais pessoas conectadas com internet de qualidade em Sobral." />
+        <link rel="canonical" href="https://www.gpnetce.com.br/indicacoes" />
+      </Helmet>
       {/* Header */}
       <div className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">

@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { FileText, Download } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 const TermsContracts = () => {
   const documents = [{
     title: "Contrato de SCM",
@@ -24,6 +25,11 @@ const TermsContracts = () => {
     downloadUrl: "#"
   }];
   return <div className="min-h-screen">
+      <Helmet>
+        <title>Termos e Contratos - GPNet | Documentos Legais Internet Sobral</title>
+        <meta name="description" content="Acesse todos os termos de uso, contratos e documentos legais da GPNet. Transparência total nos nossos serviços de internet em Sobral, CE." />
+        <link rel="canonical" href="https://www.gpnetce.com.br/termos-contratos" />
+      </Helmet>
       <Header />
       <main className="pt-40 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">

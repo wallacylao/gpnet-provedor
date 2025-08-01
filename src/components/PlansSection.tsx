@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, Wifi, Router } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const PlansSection = () => {
   const whatsappNumber = '5588997129857';
@@ -67,19 +68,56 @@ const PlansSection = () => {
     }
   ];
 
+  // Schema markup for service offers
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Planos de Internet Fibra Óptica GPNet",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "GPNet"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Planos de Internet Fibra Óptica",
+      "itemListElement": plans.map(plan => ({
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Plano ${plan.name} ${plan.speed} Mbps`,
+          "description": `Internet fibra óptica ${plan.speed} Mbps para casa com ${plan.features.join(', ')}`
+        },
+        "price": parseFloat(plan.price.replace('R$ ', '').replace('/mês', '').replace(',', '.')),
+        "priceCurrency": "BRL",
+        "availability": "https://schema.org/InStock",
+        "validFrom": new Date().toISOString().split('T')[0],
+        "areaServed": {
+          "@type": "City",
+          "name": "Sobral",
+          "addressRegion": "CE",
+          "addressCountry": "BR"
+        }
+      }))
+    }
+  };
+
   return (
     <section id="planos" className="py-20 bg-gray-50">
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(serviceSchema)}
+        </script>
+      </Helmet>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Escolha o{' '}
+            Planos de Internet para Casa em Sobral{' '}
             <span className="bg-gradient-to-r from-gpnet-green to-gpnet-blue bg-clip-text text-transparent">
-              plano ideal
-            </span>{' '}
-            para você
+              com Fibra Óptica
+            </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Planos com velocidade real garantida e sem pegadinhas. Todos incluem Wi-Fi e instalação gratuita.
+            Internet fibra óptica Sobral com velocidade real garantida. Melhor internet para jogos e trabalho com suporte 24h.
           </p>
         </div>
 
