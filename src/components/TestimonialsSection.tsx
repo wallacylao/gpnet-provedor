@@ -161,19 +161,18 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-          {/* Rating Summary */}
-          <div className="flex items-center justify-center gap-6 text-center">
-            <div className="flex items-center gap-2">
-              <div className="flex">
-                {renderStars(5)}
-              </div>
-              <span className="text-2xl font-bold text-foreground">{averageRating}</span>
+        {/* Rating Summary */}
+        <div className="mb-16 flex items-center justify-center gap-6 text-center">
+          <div className="flex items-center gap-2">
+            <div className="flex">
+              {renderStars(5)}
             </div>
-            <div className="w-px h-8 bg-border"></div>
-            <div>
-              <p className="text-sm text-muted-foreground">Baseado em</p>
-              <p className="font-semibold text-foreground">{totalReviews} avaliações</p>
-            </div>
+            <span className="text-2xl font-bold text-foreground">{averageRating}</span>
+          </div>
+          <div className="w-px h-8 bg-border"></div>
+          <div>
+            <p className="text-sm text-muted-foreground">Baseado em</p>
+            <p className="font-semibold text-foreground">{totalReviews} avaliações</p>
           </div>
         </div>
 
