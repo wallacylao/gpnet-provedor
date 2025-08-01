@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { trackEvent } = useGoogleAnalytics();
 
   // Detectar rolagem da página
   useEffect(() => {
@@ -52,6 +54,15 @@ const Header = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleReferralsClick = () => {
+    trackEvent('navigation_click', {
+      page: 'indicacoes',
+      source: 'header_menu'
+    });
+    navigate('/indicacoes');
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 bg-gray-900 backdrop-blur-md border-b border-gray-800 shadow-sm transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
       <div className="container mx-auto px-4">
@@ -92,6 +103,12 @@ const Header = () => {
               className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
             >
               Sobre
+            </button>
+            <button
+              onClick={handleReferralsClick}
+              className="text-gray-200 hover:text-gpnet-green transition-colors duration-200"
+            >
+              Indicações
             </button>
             <button
               onClick={() => scrollToSection('contato')}
@@ -154,6 +171,12 @@ const Header = () => {
                 className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
               >
                 Sobre
+              </button>
+              <button
+                onClick={handleReferralsClick}
+                className="text-left text-gray-200 hover:text-gpnet-green transition-colors duration-200"
+              >
+                Indicações
               </button>
               <button
                 onClick={() => scrollToSection('contato')}
