@@ -10,6 +10,7 @@ import FAQ from "./pages/FAQ";
 import TermsContracts from "./pages/TermsContracts";
 import Referrals from "./pages/Referrals";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <BrowserRouter>
+          <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/politica-privacidade" element={<PrivacyPolicy />} />
