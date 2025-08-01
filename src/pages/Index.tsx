@@ -10,8 +10,17 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
+import { useEffect } from 'react';
 
 const Index = () => {
+  const { trackPageView } = useGoogleAnalytics();
+
+  useEffect(() => {
+    trackPageView('/', 'Home - GPNet Internet Fibra Óptica');
+  }, [trackPageView]);
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -27,6 +36,7 @@ const Index = () => {
       <Footer />
       <CookieBanner />
       <WhatsAppButton />
+      <GoogleAnalytics />
     </div>
   );
 };

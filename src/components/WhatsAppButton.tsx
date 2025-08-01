@@ -1,11 +1,14 @@
 
 import { MessageCircle } from 'lucide-react';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 const WhatsAppButton = () => {
   const phoneNumber = "5588997129857";
   const message = "Olá! Gostaria de saber mais sobre os planos da GPNet.";
+  const { trackWhatsAppClick } = useGoogleAnalytics();
 
   const handleWhatsAppClick = () => {
+    trackWhatsAppClick('floating_button');
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };

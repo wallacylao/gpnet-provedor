@@ -3,11 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, Wifi, Router } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 const PlansSection = () => {
   const whatsappNumber = '5588997129857';
+  const { trackPlanClick } = useGoogleAnalytics();
 
   const handleWhatsAppClick = (plan: any) => {
+    // Rastrear clique no plano para Analytics
+    trackPlanClick(plan.name, plan.price.replace('R$ ', '').replace('/mês', ''));
     const message = `Olá! Vim do site da GPNet e tenho interesse no Plano ${plan.name} (${plan.speed} Mbps por ${plan.price}/mês). Gostaria de mais informações sobre contratação e disponibilidade na minha região.`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
