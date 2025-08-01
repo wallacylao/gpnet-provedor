@@ -5,7 +5,7 @@ import PlansSection from '@/components/PlansSection';
 import CoverageSection from '@/components/CoverageSection';
 import AboutSection from '@/components/AboutSection';
 import ReferralSection from '@/components/ReferralSection';
-import InstagramSection from '@/components/InstagramSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
@@ -30,7 +30,7 @@ const Index = () => {
         <CoverageSection />
         <AboutSection />
         <ReferralSection />
-        <InstagramSection />
+        <TestimonialsSection />
         <ContactSection />
       </main>
       <Footer />
