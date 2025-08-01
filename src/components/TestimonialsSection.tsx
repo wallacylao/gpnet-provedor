@@ -93,8 +93,7 @@ const TestimonialsSection = () => {
   const { trackEvent } = useGoogleAnalytics();
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: 'start' },
-    [Autoplay({ delay: 4000, stopOnInteraction: false })]
+    { loop: true, align: 'start' }
   );
 
   const onSelect = useCallback(() => {
@@ -138,7 +137,7 @@ const TestimonialsSection = () => {
               <div className="relative">
                 <img 
                   src={testimonialsHero} 
-                  alt="Cliente satisfeito da GPNet" 
+                  alt="Cliente satisfeito da GPNet usando internet fibra óptica de alta velocidade em Sobral" 
                   className="w-full h-[400px] lg:h-[500px] object-cover rounded-2xl shadow-xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-testimonial-purple/20 to-testimonial-pink/20 rounded-2xl"></div>
@@ -155,7 +154,7 @@ const TestimonialsSection = () => {
               </h2>
               
               <p className="text-xl text-muted-foreground mb-8">
-                Clientes satisfeitos em Sobral compartilham suas experiências com nossa internet de fibra óptica de alta qualidade e suporte excepcional.
+                <strong>Clientes satisfeitos em Sobral</strong> compartilham suas experiências com nossa <em>internet de fibra óptica</em> de alta qualidade e <mark className="bg-transparent text-gpnet-green font-semibold">suporte excepcional</mark>.
               </p>
             </div>
           </div>
@@ -185,12 +184,7 @@ const TestimonialsSection = () => {
               align: "start",
               loop: true,
             }}
-            plugins={[
-              Autoplay({
-                delay: 4000,
-                stopOnInteraction: false,
-              }),
-            ]}
+            plugins={[]}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {testimonials.map((testimonial, index) => (

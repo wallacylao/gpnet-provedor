@@ -53,7 +53,7 @@ const HeroSection = () => {
               />
               <img
                 src={slide.mobileImage}
-                alt={slide.alt}
+                alt={`${slide.alt} - Internet fibra óptica de alta velocidade em Sobral com GPNet`}
                 className="w-full h-full object-cover"
                 loading={index === 0 ? "eager" : "lazy"}
                 width="1920"
@@ -92,8 +92,8 @@ const HeroSection = () => {
 
           {/* Enhanced subtitle with SEO keywords */}
           <p className="text-base md:text-xl lg:text-2xl text-white/80 mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg animate-fade-in delay-300">
-            A <strong className="text-gpnet-green">melhor internet para jogos em Sobral</strong>: fibra óptica com velocidade real, 
-            <strong className="text-gpnet-blue"> internet com suporte 24h</strong> e planos flexíveis. Conecte-se sem limites!
+            A <strong className="text-gpnet-green">melhor internet para jogos em Sobral</strong>: <em>fibra óptica com velocidade real</em>, 
+            <strong className="text-gpnet-blue"> internet com suporte 24h</strong> e <mark className="bg-gpnet-green/20 text-gpnet-green">planos flexíveis</mark>. Conecte-se sem limites!
           </p>
 
           {/* CTA Buttons */}
@@ -114,7 +114,7 @@ const HeroSection = () => {
                 <Zap className="w-6 h-6 md:w-10 md:h-10 text-white" />
               </div>
               <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Fibra Óptica Real</h3>
-              <p className="text-gray-600 text-center text-sm md:text-lg">Até <strong className="text-gpnet-blue">800 Mbps</strong> de internet fibra óptica garantida em Sobral</p>
+              <p className="text-gray-600 text-center text-sm md:text-lg">Até <strong className="text-gpnet-blue">800 Mbps</strong> de <em>internet fibra óptica garantida</em> em <mark className="bg-transparent text-gpnet-green font-semibold">Sobral</mark></p>
             </div>
 
             <div className="group flex flex-col items-center p-4 md:p-8 bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-white/20 animate-fade-in delay-1000">
@@ -122,7 +122,7 @@ const HeroSection = () => {
                 <Shield className="w-6 h-6 md:w-10 md:h-10 text-white" />
               </div>
               <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Internet Estável</h3>
-              <p className="text-gray-600 text-center text-sm md:text-lg">Rede com <strong className="text-gpnet-green">99,9% de disponibilidade</strong> e monitoramento 24h em Sobral</p>
+              <p className="text-gray-600 text-center text-sm md:text-lg">Rede com <strong className="text-gpnet-green">99,9% de disponibilidade</strong> e <em>monitoramento 24h</em> em <mark className="bg-transparent text-gpnet-blue font-semibold">Sobral</mark></p>
             </div>
 
             <div className="group flex flex-col items-center p-4 md:p-8 bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-white/20 animate-fade-in delay-[1300ms]">
@@ -130,7 +130,7 @@ const HeroSection = () => {
                 <Headphones className="w-6 h-6 md:w-10 md:h-10 text-white" />
               </div>
               <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Suporte 24h</h3>
-              <p className="text-gray-600 text-center text-sm md:text-lg">Internet com suporte 24h <strong className="text-gpnet-blue">local em Sobral</strong> quando você precisar</p>
+              <p className="text-gray-600 text-center text-sm md:text-lg"><em>Internet com suporte 24h</em> <strong className="text-gpnet-blue">local em Sobral</strong> quando você <mark className="bg-transparent text-gray-800 font-semibold">precisar</mark></p>
             </div>
           </div>
 
