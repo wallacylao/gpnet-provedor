@@ -139,7 +139,7 @@ const TestimonialsSection = () => {
                 <img 
                   src={testimonialsHero} 
                   alt="Cliente satisfeito da GPNet" 
-                  className="w-full max-w-sm h-auto rounded-2xl shadow-xl"
+                  className="w-full h-[400px] lg:h-[500px] object-cover rounded-2xl shadow-xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-testimonial-purple/20 to-testimonial-pink/20 rounded-2xl"></div>
               </div>
