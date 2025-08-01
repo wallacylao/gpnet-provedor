@@ -67,6 +67,11 @@ export default {
 					blue: '#30D5C8',
 					'green-dark': '#8FE000',
 					'blue-dark': '#28B8AC'
+				},
+				testimonial: {
+					pink: 'hsl(323 84% 74%)',
+					rose: 'hsl(333 71% 68%)', 
+					purple: 'hsl(277 70% 61%)',
 				}
 			},
 			borderRadius: {

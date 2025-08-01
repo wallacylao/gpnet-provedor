@@ -115,7 +115,7 @@ const TestimonialsSection = () => {
         key={index}
         className={`w-4 h-4 ${
           index < rating
-            ? 'fill-yellow-400 text-yellow-400'
+            ? 'fill-testimonial-rose text-testimonial-rose'
             : 'text-gray-300'
         }`}
       />
@@ -126,31 +126,31 @@ const TestimonialsSection = () => {
   const totalReviews = testimonials.length;
 
   return (
-    <section className="py-20 bg-gradient-to-br from-background via-background to-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-gradient-to-br from-background via-testimonial-pink/5 to-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(323_84%_74%/0.1),transparent_50%)] pointer-events-none" />
+      <div className="container mx-auto px-4 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16 animate-fade-in">
           <div className="flex items-center justify-center mb-6">
             <div className="relative">
-              <Heart className="w-16 h-16 text-primary fill-primary/20" />
-              <div className="absolute -top-2 -right-2">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
-                  <Star className="w-3 h-3 text-white fill-white" />
-                </div>
+              <Heart className="w-16 h-16 text-testimonial-pink fill-testimonial-pink/20" />
+              <div className="absolute -top-2 -right-2 flex">
+                {[...Array(3)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 text-testimonial-purple fill-current animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                ))}
               </div>
             </div>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Feedback de quem é{' '}
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              #gpnetlover
+            <span className="bg-gradient-to-r from-testimonial-purple via-testimonial-pink to-testimonial-rose bg-clip-text text-transparent">
+              #gplover
             </span>
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Mais de <span className="font-semibold text-foreground">{totalReviews} clientes satisfeitos</span> em Sobral 
-            compartilham suas experiências com nossa internet de fibra óptica
+            Clientes satisfeitos em Sobral compartilham suas experiências com nossa internet de fibra óptica de alta qualidade e suporte excepcional.
           </p>
 
           {/* Rating Summary */}
@@ -188,8 +188,8 @@ const TestimonialsSection = () => {
             <CarouselContent className="-ml-2 md:-ml-4">
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={testimonial.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Card 
-                    className="h-full group hover:shadow-xl transition-all duration-300 border-0 shadow-lg hover:shadow-primary/10 animate-scale-in"
+                   <Card 
+                    className="h-full group hover:shadow-xl transition-all duration-300 border-testimonial-pink/30 shadow-lg hover:shadow-testimonial-pink/20 bg-gradient-to-br from-white/60 to-testimonial-pink/10 backdrop-blur-sm animate-scale-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <CardContent className="p-6 h-full flex flex-col">
@@ -207,16 +207,11 @@ const TestimonialsSection = () => {
                       </blockquote>
 
                       {/* Customer Info */}
-                      <div className="flex items-center gap-3 mt-auto">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-semibold text-sm">
-                          {testimonial.initials}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-foreground">{testimonial.name}</p>
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <MapPin className="w-3 h-3" />
-                            {testimonial.location}
-                          </div>
+                      <div className="mt-auto">
+                        <p className="font-semibold text-foreground">{testimonial.name}</p>
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <MapPin className="w-3 h-3" />
+                          {testimonial.location}
                         </div>
                       </div>
                     </CardContent>
