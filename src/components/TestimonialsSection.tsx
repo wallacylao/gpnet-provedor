@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react';
-import { Star, Heart, Quote, MapPin } from 'lucide-react';
+import { Star, Quote, MapPin } from 'lucide-react';
+import testimonialsHero from '@/assets/testimonials-hero.webp';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
@@ -129,29 +130,36 @@ const TestimonialsSection = () => {
     <section className="py-20 bg-gradient-to-br from-background via-testimonial-pink/5 to-background relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(323_84%_74%/0.1),transparent_50%)] pointer-events-none" />
       <div className="container mx-auto px-4 relative z-10">
-        {/* Header Section */}
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="flex items-center justify-center mb-6">
-            <div className="relative">
-              <Heart className="w-16 h-16 text-testimonial-pink fill-testimonial-pink/20" />
-              <div className="absolute -top-2 -right-2 flex">
-                {[...Array(3)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-testimonial-purple fill-current animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                ))}
+        {/* Header Section - Layout Side by Side */}
+        <div className="mb-16">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            {/* Imagem à esquerda */}
+            <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+              <div className="relative">
+                <img 
+                  src={testimonialsHero} 
+                  alt="Cliente satisfeito da GPNet" 
+                  className="w-full max-w-sm h-auto rounded-2xl shadow-xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-testimonial-purple/20 to-testimonial-pink/20 rounded-2xl"></div>
               </div>
             </div>
+            
+            {/* Texto à direita */}
+            <div className="text-center lg:text-left order-1 lg:order-2">
+              <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+                Feedback de quem é{' '}
+                <span className="bg-gradient-to-r from-testimonial-purple via-testimonial-pink to-testimonial-rose bg-clip-text text-transparent">
+                  #gplover
+                </span>
+              </h2>
+              
+              <p className="text-xl text-muted-foreground mb-8">
+                Clientes satisfeitos em Sobral compartilham suas experiências com nossa internet de fibra óptica de alta qualidade e suporte excepcional.
+              </p>
+            </div>
           </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Feedback de quem é{' '}
-            <span className="bg-gradient-to-r from-testimonial-purple via-testimonial-pink to-testimonial-rose bg-clip-text text-transparent">
-              #gplover
-            </span>
-          </h2>
-          
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Clientes satisfeitos em Sobral compartilham suas experiências com nossa internet de fibra óptica de alta qualidade e suporte excepcional.
-          </p>
+        </div>
 
           {/* Rating Summary */}
           <div className="flex items-center justify-center gap-6 text-center">
