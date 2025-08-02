@@ -11,7 +11,6 @@ import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
-import SEOOptimizer from '@/components/SEOOptimizer';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 import { useEffect } from 'react';
 
@@ -38,7 +37,6 @@ const Index = () => {
       <CookieBanner />
       <WhatsAppButton />
       <GoogleAnalytics />
-      <SEOOptimizer />
     </div>
   );
 };

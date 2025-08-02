@@ -169,8 +169,8 @@ const ContactSection = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Estamos prontos para <strong>atender você</strong>! Fale conosco e descubra como nossa <em>internet</em> 
-            pode <mark className="bg-gpnet-green/10 text-gpnet-green">transformar sua experiência digital</mark>.
+            Estamos prontos para atender você! Fale conosco e descubra como nossa internet 
+            pode transformar sua experiência digital.
           </p>
         </div>
 

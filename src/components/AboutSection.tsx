@@ -37,8 +37,8 @@ const AboutSection = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Somos um <strong className="text-gpnet-blue">provedor de internet</strong> comprometido em oferecer <em>conectividade de qualidade</em>, 
-            com foco na <mark className="bg-gpnet-green/10 text-gpnet-green">experiência do cliente</mark> e tecnologia de ponta.
+            Somos um provedor de internet comprometido em oferecer conectividade de qualidade, 
+            com foco na experiência do cliente e tecnologia de ponta.
           </p>
         </div>
 
@@ -87,8 +87,8 @@ const AboutSection = () => {
               <Users className="w-12 h-12 text-gpnet-blue mb-4" />
               <h3 className="text-xl font-bold mb-4">Compromisso com o Cliente</h3>
               <p className="text-gray-600 leading-relaxed">
-                Nosso foco está em oferecer não apenas <strong>internet de qualidade</strong>, mas uma <em>experiência 
-                completa de atendimento</em>. Cada cliente é único e merece <mark className="bg-transparent text-gpnet-green font-semibold">soluções personalizadas</mark> 
+                Nosso foco está em oferecer não apenas internet de qualidade, mas uma experiência 
+                completa de atendimento. Cada cliente é único e merece soluções personalizadas 
                 para suas necessidades.
               </p>
             </CardContent>
@@ -99,8 +99,8 @@ const AboutSection = () => {
               <Zap className="w-12 h-12 text-gpnet-green mb-4" />
               <h3 className="text-xl font-bold mb-4">Tecnologia Avançada</h3>
               <p className="text-gray-600 leading-relaxed">
-                Investimos constantemente em <strong>infraestrutura de ponta</strong>, utilizando <em>fibra óptica</em> 
-                e equipamentos de última geração para garantir a <mark className="bg-transparent text-gpnet-blue font-semibold">melhor experiência de navegação</mark> 
+                Investimos constantemente em infraestrutura de ponta, utilizando fibra óptica 
+                e equipamentos de última geração para garantir a melhor experiência de navegação 
                 para nossos clientes.
               </p>
             </CardContent>
